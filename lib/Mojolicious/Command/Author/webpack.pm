@@ -39,9 +39,10 @@ sub run {
 
 sub _exec_mojo_webpack {
   my ($self, @argv) = @_;
-  warn "[Webpack] exec mojo webpack @argv ...\n" if $ENV{MORBO_VERBOSE} and !SILENT;
-  { exec mojo => webpack => @argv };
-  die "exec mojo @argv: $!";
+  unshift @argv, qw(mojo webpack);
+  warn "[Webpack] exec @argv ...\n" if $ENV{MORBO_VERBOSE} and !SILENT;
+  { exec { $argv[0] } @argv; }
+  die "exec @argv: $!";
 }
 
 sub _parse_argv {
